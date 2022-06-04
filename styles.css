@@ -34,10 +34,12 @@
   }
 
 .title-text{
+    background-color: transparent;
     font-size: 40px;
 }
 
 .subline-text{
+    background-color: transparent;
     font-size: medium;
 }
 
