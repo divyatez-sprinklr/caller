@@ -17,6 +17,7 @@ let arr =[
     {title:"#",subtitle:"-"},
 ];
 
+let callActive =0;
 let cursorLocation=0;
 console.log(arr);
 let ind=-1;
@@ -71,7 +72,7 @@ dialpadBtnContainer.innerHTML +=
 
 dialpadBtnContainer.innerHTML += 
     `<div class="dialbtn-wrapper">
-        <div class="dialpad-btn-caller flexCol centerRow centerCol">
+        <div class="dialpad-btn-caller flexCol centerRow centerCol" id="dialpad-caller-btn">
             <img class='dialpad-btn-caller-icon' src="phone.png"/>
         </div>
     </div>`;
@@ -114,4 +115,19 @@ function getWidthOfText(txt, fontname, fontsize){
     if(getWidthOfText.ctx.font !== fontspec)
         getWidthOfText.ctx.font = fontspec;
     return getWidthOfText.ctx.measureText(txt).width;
+}
+
+document.getElementById("dialpad-caller-btn").addEventListener('click',handleCallButtonTheme);
+
+function handleCallButtonTheme(){
+    console.log('clicked');
+    let btn = document.getElementById("dialpad-caller-btn");
+    console.log(btn.style.backgroundColor);
+    callActive = (callActive+1)%2;
+    if(callActive)
+        btn.style.backgroundColor='#BA0001';
+    else{
+         btn.style.backgroundColor='#49B568';
+    }
+
 }
