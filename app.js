@@ -17,6 +17,7 @@ let arr =[
     {title:"#",subtitle:"-"},
 ];
 
+let cursorLocation=0;
 console.log(arr);
 let ind=-1;
 arr.forEach(item => {
@@ -42,18 +43,16 @@ arr.forEach(item => {
         let dialpadInput = document.getElementById('dialpad-input');
         let val = dialpadInput.value;
         console.log("BEFORE "+dialpadInput.selectionStart);
-        let prev = dialpadInput.selectionStart;
-        dialpadInput.value = val.slice(0, dialpadInput.selectionStart) + item.title + val.slice(dialpadInput.selectionStart,val.length);
-        dialpadInput.selectionStart = prev+1;
-        console.log("AFTER "+dialpadInput.selectionStart);
-        //dialpadInput.selectionStart = prev;
-        //dialpadInput.value += item.title;
-        //console.log(dialpadInput.scrollLeft);
-        console.log(dialpadInput.scrollWidth + " " + dialpadInput.value.length);
-        if(dialpadInput.value.length===dialpadInput.selectionStart)
-        {
-            dialpadInput.scrollLeft = dialpadInput.scrollWidth;
-        }
+        dialpadInput.selectionStart = cursorLocation;
+        dialpadInput.value = val.slice(0, cursorLocation) + item.title + val.slice(cursorLocation,val.length);
+        cursorLocation++;
+        // if(dialpadInput.value.length===dialpadInput.selectionStart)
+        // {
+        //     dialpadInput.scrollLeft = dialpadInput.scrollWidth;
+        // }
+        handleFocus(dialpadInput.value.slice(0,cursorLocation));
+
+
     }
 
     console.log(ind);
@@ -77,9 +76,42 @@ dialpadBtnContainer.innerHTML +=
         </div>
     </div>`;
 
-
+document.getElementById('dialpad-input').addEventListener('click',function(event){
+    let dialpadInput = document.getElementById('dialpad-input');
+    console.log('updated cursoor location from '+cursorLocation + "to "+ dialpadInput.selectionStart );
+    cursorLocation = dialpadInput.selectionStart;
+})
 document.getElementById('dialpad-input-btn-backspace').addEventListener('click',function (event){
     event.preventDefault();
+    if(cursorLocation<=0)
+        return;
     console.log('backspace');
+    let dialpadInput = document.getElementById('dialpad-input');
+    let val = dialpadInput.value;
+    dialpadInput.selectionStart = cursorLocation;
+    let begin = val.slice(0,cursorLocation-1);
+    let end = val.slice(cursorLocation,val.length);
+    dialpadInput.value = begin + end;
+    if(cursorLocation>0)
+        cursorLocation--;
+    handleFocus(dialpadInput.value.slice(0,cursorLocation));
 });
 
+
+function handleFocus(str){
+    let focusWidth = getWidthOfText(str,'Courier New',"25px");
+    console.log(focusWidth);
+    let dialpadInput = document.getElementById('dialpad-input');
+    dialpadInput.scrollLeft = focusWidth;
+}
+
+function getWidthOfText(txt, fontname, fontsize){
+    if(getWidthOfText.c === undefined){
+        getWidthOfText.c=document.createElement('canvas');
+        getWidthOfText.ctx=getWidthOfText.c.getContext('2d');
+    }
+    var fontspec = fontsize + ' ' + fontname;
+    if(getWidthOfText.ctx.font !== fontspec)
+        getWidthOfText.ctx.font = fontspec;
+    return getWidthOfText.ctx.measureText(txt).width;
+}

@@ -1,3 +1,7 @@
+* {
+    background-color: #1f1f1f;
+}
+
 .dialpad{
     padding: 50px;
     background-color: #1f1f1f;
@@ -73,10 +77,11 @@
 form {
     display:flex;
     flex-direction:row;
-    border:1px solid grey;
+    border: solid grey;
+    border-bottom: none;
     padding:2px;
     background-color: #1f1f1f;
-    height: 50px;
+    height: 80px;
     border-radius: 10px 10px 0px 0px;
   }
   
@@ -88,6 +93,7 @@ form {
     width: 100px;
     font-size: 25px;
     margin-right: 10px;
+    font-family: 'Courier New';
 }
   
 .dial-input-area:focus {
@@ -101,7 +107,7 @@ form {
 }
 
 .dialpad-width{
-    width: 418px;
+    width: 416px;
 }
 
 .borderRadius10{
